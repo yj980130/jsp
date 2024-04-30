@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" id="WebApp_ID" version="4.0">
+  <display-name>jspPro</display-name>
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+  </welcome-file-list>
+  
+  <!-- 
+	<servlet>
+		<description>첫 번째 서블릿 - 날짜</description>
+		<description>현재 날짜, 시간 정보 응답</description>
+		<servlet-name>now</servlet-name>
+		<servlet-class>days01.Now</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>now</servlet-name>
+		<url-pattern>/days01/now.ss</url-pattern>	
+		<url-pattern>/days01/now</url-pattern>	
+		<url-pattern>/</url-pattern>
+		<url-pattern>/days03/board/*</url-pattern>	
+		<url-pattern>*.htm</url-pattern>	
+	</servlet-mapping> 
+	-->
+	
+	<!-- 
+	<error-page>
+		<error-code>404</error-code>
+		<location>/WEB-INF/error/404.jsp</location>
+	</error-page>
+	 -->
+	 
+	 <!-- 
+	 <error-page>
+	 	<exception-type>java.lang.NullPointerException</exception-type>
+	 	<location>/WEB-INF/error/nullPointer.jsp</location>
+	 </error-page>
+	  -->
+	  
+	  <!-- 
+	  <jsp-config>
+	  	<jsp-property-group>
+	  		<url-pattern>/days05/*</url-pattern>
+	  		<include-prelude>/WEB-INF/inc/include.jspf</include-prelude>
+	  		<include-coda>/WEB-INF/inc/footer.jspf</include-coda>
+	  	</jsp-property-group>
+	  </jsp-config>
+	   -->
+	
+	<!-- 
+		웹 사이트 전체에서 사용할 공통 환경설정값 
+		application 객체 + 메서드()
+	-->  
+	<context-param>
+		<description>DB 사용자 계정</description>
+		<param-name>user</param-name>
+		<param-value>scott</param-value>
+	</context-param>
+	<context-param>
+		<description>DB 비밀번호</description>
+		<param-name>password</param-name>
+		<param-value>ss123$</param-value>
+	</context-param>
+	<context-param>
+		<description>다운로드 경로</description>
+		<param-name>filePath</param-name>
+		<param-value>/days05</param-value>
+	</context-param>
+	
+	<resource-ref>
+		<description>Oracle Datasource example</description>
+		<res-ref-name>jdbc/myoracle</res-ref-name>
+		<res-type>javax.sql.DataSource</res-type>
+		<res-auth>Container</res-auth>
+	</resource-ref>
+	   
+	<!-- 단위 : 분 -->
+	<!-- 0 -1 설정하면 세션의 유효 시간을 갖지 않는다. -->
+	<!-- 
+	<session-config>
+		<session-timeout>20</session-timeout>
+	</session-config> 
+	-->
+	
+</web-app>

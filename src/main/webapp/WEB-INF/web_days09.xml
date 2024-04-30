@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" id="WebApp_ID" version="3.1">
+  <display-name>jspPro</display-name>
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+  </welcome-file-list>
+     <!-- 1. DBCP 설정 -->
+     <resource-ref>
+		 <description>Oracle Datasource example</description>
+		 <res-ref-name>jdbc/myoracle</res-ref-name>
+		 <res-type>javax.sql.DataSource</res-type>
+		 <res-auth>Container</res-auth>
+	</resource-ref>
+	
+	<!-- 2. 인코딩 필터  --> 	
+	<filter>
+	  <filter-name>characterEncodingFilter</filter-name>
+	  <filter-class>com.filter.CharacterEncodingFilter</filter-class>
+	  <init-param>
+	    <param-name>encoding</param-name>
+	    <param-value>UTF-8</param-value>
+	  </init-param>
+	</filter>
+	<filter-mapping>
+	  <filter-name>characterEncodingFilter</filter-name>
+	  <url-pattern>/*</url-pattern> 
+	  <!-- <url-pattern>/</url-pattern>  위의 패턴과 차이점. -->
+	  <dispatcher>REQUEST</dispatcher>
+	</filter-mapping>
+	
+	<!-- 3.  컨트롤러 서블릿 등록 -->
+	<servlet>
+	  <description>서블릿 3.1 파일 업로드 테스트</description>
+	  <servlet-name>uploadServlet</servlet-name>
+	  <servlet-class>days09.UploadServlet</servlet-class>
+	  <!-- 업로드할때 임시로 저장되는 경로 -->
+	  <multipart-config> 
+	  	<location>C:\Tools\apache-tomcat-9.0.88\temp</location>
+	  	<!-- -1 : 무한대 byte -->
+	  	<max-file-size>-1</max-file-size>
+	  	<max-request-size>-1</max-request-size>
+	  	<!-- 1024kb보다 더 큰 파일 생성되면 C:\Tools\apache-tomcat-9.0.88\temp 임시파일 생성하겠다 -->
+	  	<file-size-threshold>1024</file-size-threshold>
+	  </multipart-config>
+	</servlet>
+	<servlet-mapping>
+	  <servlet-name>uploadServlet</servlet-name>
+	  <!-- <url-pattern>/</url-pattern> -->
+	  <url-pattern>/days09/upload</url-pattern>
+	</servlet-mapping>
+	
+	
+		
+</web-app>
+
+
+
+
+
+
+
+
+
+
+

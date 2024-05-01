@@ -1,4 +1,4 @@
-package days09;
+package homework;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,7 +18,7 @@ import com.oreilly.servlet.multipart.FileRenamePolicy;
 import com.util.ConnectionProvider;
 import com.util.JdbcUtil;
 
-//@WebServlet("*.ss")
+@WebServlet("*.ss")
 public class FileTestServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -38,22 +38,22 @@ public class FileTestServlet extends HttpServlet {
 		// init()      commandHalderMap <url, Handler> 
 		try {
 			conn = ConnectionProvider.getConnection();
-			FileTestDAO dao = FileTestDAO.getInstance(); // 싱글톤
+			ImageListDAO dao = ImageListDAO.getInstance(); // 싱글톤
 			// ㄴ
-			saveDirectory = request.getRealPath("/days09/upload");
+			saveDirectory = request.getRealPath("/homework/upload");
 			System.out.println(saveDirectory);
 
 			if( uri.endsWith("list.ss") ) { // 자료실 목록 보기            
-				ArrayList<FileTestDTO>  list =  dao.selectFileList(conn);
+				ArrayList<ImageListDTO>  list =  dao.selectFileList(conn);
 				request.setAttribute("list", list);
 
-				String path = "/days09/ex04_list.jsp";
+				String path = "/homework/list.jsp";
 				RequestDispatcher dispatcher = request.getRequestDispatcher(path);
 				dispatcher.forward(request, response);
 
 			}else if( uri.endsWith("write.ss") ) {   // 글쓰기 + write.jsp
 
-				String path = "/days09/ex04_write.jsp";
+				String path = "/homework/write.jsp";
 				RequestDispatcher dispatcher = request.getRequestDispatcher(path);
 				dispatcher.forward(request, response);
 
@@ -76,21 +76,20 @@ public class FileTestServlet extends HttpServlet {
 						, policy
 						);
 				// 벌써 첨부파일은 upload 폴더에 저장 완료!!!
-				FileTestDTO dto = new FileTestDTO();
-				String subject = multiRequest.getParameter("subject");
-				dto.setSubject(subject);
+				ImageListDTO dto = new ImageListDTO();
+				String subject = multiRequest.getParameter("product_name");
+				dto.setProduct_name(subject);
 
 				File attachFile = multiRequest.getFile("attachFile");
 				if (attachFile != null) {  // 첨부파일이 있을 경우에만
-					String fileName  = attachFile.getName();
-					long filelength = attachFile.length();
+					String product_name  = attachFile.getName();//getName은 해당 파일의 이름을 가져온다.
+					
 
-					String originalFileName = multiRequest.getOriginalFileName("attachFile");
+					String product_detail = multiRequest.getOriginalFileName("attachFile");
 					String filesystemName = multiRequest.getFilesystemName("attachFile");
 
-					dto.setFilelength(filelength);
-					dto.setOriginalfilename(originalFileName);
-					dto.setFilesystemname(filesystemName);
+					dto.setProduct_detail(product_detail);
+					
 				} // if
 
 				int rowCount = dao.insert(conn, dto);
@@ -98,7 +97,7 @@ public class FileTestServlet extends HttpServlet {
 				response.sendRedirect("list.ss");
 
 			}else if( uri.endsWith("delete.ss") ) { // 삭제
-				int num = Integer.parseInt(request.getParameter("num") );
+				int num = Integer.parseInt(request.getParameter("product_id") );
 				String filesystemname = request.getParameter("filesystemname");  // ""      
 				// 1. DB 삭제 
 				int rowCount = dao.delete(conn, num);
@@ -108,18 +107,18 @@ public class FileTestServlet extends HttpServlet {
 				if ( deleteFile.exists() ) {
 					deleteFile.delete();
 				} 
-				response.sendRedirect("/jspPro/days09/list.ss");   
+				response.sendRedirect("/jspPro/homework/list.ss");   
 
 			}else if( uri.endsWith("update.ss") ) { // 수정 + update.jsp
 				//[문제] 첨부파일이 있는 경우
 				//       제목만 수정하고 저장하면
 				//       첨부파일 없음 - 첨부파일삭제 X
 
-				int num = Integer.parseInt(request.getParameter("num"));
-				FileTestDTO dto = dao.selectOne(conn, num);
+				int num = Integer.parseInt(request.getParameter("product_id"));
+				ImageListDTO dto = dao.selectOne(conn, num);
 				request.setAttribute("dto", dto); 
 
-				String path = "/days09/ex04_update.jsp";
+				String path = "/homework/update.jsp";
 				RequestDispatcher dispatcher = request.getRequestDispatcher(path);
 				dispatcher.forward(request, response);
 
@@ -139,24 +138,19 @@ public class FileTestServlet extends HttpServlet {
 						, policy
 						);
 				// 수정할 때 첨부파일 있다면 벌써 upload 폴더 저장 완료!!!
-				int num = Integer.parseInt(multiRequest.getParameter("num") );
+				int num = Integer.parseInt(multiRequest.getParameter("product_id") );
 				String delete_filesystemname =
 						multiRequest.getParameter("filesystemname");
 
-				FileTestDTO dto = new FileTestDTO();             
-				String subject = multiRequest.getParameter("subject");
-				dto.setSubject(subject);
-				dto.setNum(num);
+				ImageListDTO dto = new ImageListDTO();             
+				String Product_name = multiRequest.getParameter("Product_name(");
+				dto.setProduct_name(Product_name);
+				dto.setProduct_id(num);
 
 				File attachFile = multiRequest.getFile("attachFile");
 				if ( attachFile != null ) {  // 첨부파일이 있을 경우에만
 					String fileName  = attachFile.getName();
-					long filelength = attachFile.length();                
-					String originalFileName = multiRequest.getOriginalFileName("attachFile");
-					String filesystemName = multiRequest.getFilesystemName("attachFile");               
-					dto.setFilelength(filelength);
-					dto.setOriginalfilename(originalFileName);
-					dto.setFilesystemname(filesystemName);
+					
 
 					// 이전 첨부파일이 있다면 삭제..
 
@@ -165,13 +159,7 @@ public class FileTestServlet extends HttpServlet {
 									,saveDirectory , delete_filesystemname);
 					File deleteFile = new File(deleteFilePath);
 					if( deleteFile.exists() ) deleteFile.delete();
-				} else if(!delete_filesystemname.equals("")) {
-					FileTestDTO dto2 =  dao.selectOne(conn, num);
-					dto.setFilelength(dto2.getFilelength());
-					dto.setOriginalfilename(dto2.getOriginalfilename());
-					dto.setFilesystemname(dto2.getFilesystemname());                
-					// if
-				}
+				} 
 
 				int rowCount = dao.update(conn, dto);
 

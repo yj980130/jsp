@@ -18,7 +18,7 @@
 </head>
 <body>
 <header>
-    <h1 class="main"><a href="#" style="position: absolute;top:30px;">Youngjin Home</a></h1>
+    <h1 class="main"><a href="#" style="position: absolute;top:30px;">youngjin Home</a></h1>
     <ul>
     	<li><a href="#">로그인</a></li>
 	    <li><a href="#">회원가입</a></li>
@@ -28,33 +28,10 @@
 	<span class="material-symbols-outlined">view_list</span> jsp days00
 </h3>
 <div>
-	<a href="/jspPro/days09/list.ss">자료실 목록보기</a><br />
+	<a href="/jspPro/homework/list.ss">상품 목록보기</a><br />
 
 	<pre class="code">
-		파일첨부 1개 + 게시글 -> 자료실
-						제목
-		1. 테이블 , 시퀀스 생성
-    create table filetest(          
-     num number not null primary key  
-     , subject varchar2(50) not null     
-     
-     , filesystemname varchar2(100) -- 실제 저장되는 파일명       a1.txt
-     , originalfilename varchar2(100) -- 저장할 때 파일명             a.txt
-     , filelength number  -- 파일크기
-    );
-    
-   create sequence seq_filetest;
-	
-	실습)
-		days09 패키지
-			ㄴ FileTestDTO.java
-			ㄴ FileTestDAO.java
-			ㄴ FileTestServlet.java
-			
-		days09 폴더
-			ㄴ ex04_list.jsp 		list.ss
-			ㄴ ex04_write.jsp 		write.ss
-			ㄴ ex04_update.jsp 		update.ss
+		39cm
 	
 	</pre>  
 </div>

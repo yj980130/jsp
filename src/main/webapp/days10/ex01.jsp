@@ -27,8 +27,9 @@
 <h3>
 	<span class="material-symbols-outlined">view_list</span> jsp days00
 </h3>
+<a href="/jspPro/days10/replyboard/list.do">목록보기</a>
 <div>
-	<xmp class="code">
+	<pre class="code">
 		1. 계층형(답변형) 게시판 - MVC 패턴 작업
      	2. days10
            ㄴ replyboard 폴더 추가
@@ -114,7 +115,7 @@
      
      
      
-	</xmp>  
+	</pre>  
 </div>
 
 <script>
